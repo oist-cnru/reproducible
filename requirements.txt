@@ -1,0 +1,12 @@
+# Requirement file
+
+# Run `pip install -r requirements.txt` to install the required dependencies.
+# The versions installed will be recorded in the provenance data.
+
+GitPython
+pytest
+pytest-cov
+pyyaml
+sphinx
+sphinx-rtd-theme
+py-cpuinfo
