@@ -27,11 +27,12 @@ def test_rerunnable_module():
     tmp_path = tempfile.gettempdir()
     reproducible.save_json(os.path.join(tmp_path, 'provdata.json'),
                            update_timestamp=True)
+    os.remove(os.path.join(tmp_path, 'provdata.json'))
     reproducible.save_yaml(os.path.join(tmp_path, 'provdata.yaml'),
                            update_timestamp=True)
-    os.remove(os.path.join(tmp_path, 'provdata.json'))
     os.remove(os.path.join(tmp_path, 'provdata.yaml'))
-
 
     reproducible.git_dirty('.')
     reproducible.git_info('.', diff=True)
+
+    reproducible.data

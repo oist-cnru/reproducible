@@ -1,4 +1,4 @@
-__version__ = '0.1.0'
+__version__ = '0.1.1dev'
 
 from .reproducible import Context
 
@@ -6,9 +6,11 @@ from .reproducible import Context
 # similarly to the `random` standart module.
 _context = Context(repo_path=None)
 
+data             = _context.data
+
 add_repo         = _context.add_repo
 add_file         = _context.add_file
-add_data     = _context.add_data
+add_data         = _context.add_data
 add_random_state = _context.add_random_state
 
 save_json        = _context.save_json

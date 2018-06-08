@@ -31,7 +31,9 @@ The reproducible library is licensed under the [LGPL version
 3](https://www.gnu.org/licenses/lgpl-3.0.md), to allow you to use it along-side
 code that use other licenses.
 
-The library is in beta; expect some changes.
+The library is in beta; expect some changes. Python 3.5 or later is officially
+supported, but [the code runs on 2.7 and other versions as
+well](https://travis-ci.org/oist-cnru/reproducible).
 
 
 ## Install
@@ -78,7 +80,9 @@ def walk(n):
 
 if __name__ == '__main__':
     # recording repository state
-    reproducible.add_repo(path='.', allow_dirty=True, diff=False)
+    # here we are okay with running our code with uncommitted changes, but
+    # we record a diff of them in the tracked data.
+    reproducible.add_repo(path='.', allow_dirty=True, diff=True)
 
     # recording parameters; this is not necessarily needed, as the code state
     # is recorded, but it is convenient.
@@ -95,8 +99,8 @@ if __name__ == '__main__':
         pickle.dump(results, f)
     reproducible.add_file('results.pickle', category='output')
 
-    # you can examine and add or remove to the tracked data at any moment by
-    # accessing `reproducible.data`: it is a simple dictionary
+    # you can examine the tracked data and add or remove from it at any moment
+    # by running `reproducible.data()`: it is a simple dictionary
 
     # saving the provenance data
     reproducible.save_yaml('results_prov.yaml')

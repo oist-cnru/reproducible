@@ -56,7 +56,7 @@ class Context:
 
     def __init__(self, repo_path='.', allow_dirty=False, allow_untracked=False,
                        diff=True, cpuinfo=True):
-        self.data = self._basic_data(cpuinfo=cpuinfo)
+        self._data = self._collect_basic_data(cpuinfo=cpuinfo)
         if repo_path is not None:
             self.add_repo(path=repo_path, allow_dirty=allow_dirty,
                           allow_untracked=allow_untracked, diff=diff)
@@ -64,7 +64,15 @@ class Context:
 
     ## Basic Stuff
 
-    def _basic_data(self, cpuinfo):
+    def data(self):
+        """Return the current tracked information, as a dictionary.
+
+        This dictionary can be freely edited. Any subsequent reproducible method
+        that requires a specific structure in the dictionary will recreate it.
+        """
+        return self._data
+
+    def _collect_basic_data(self, cpuinfo):
         cpu_info = get_cpu_info() if cpuinfo else None
         return {'python' : {'implementation': platform.python_implementation(),
                                   'version' : platform.python_version_tuple(),
@@ -105,8 +113,8 @@ class Context:
         `record_data()` method, and provide either the seed used or the
         result of the `numpy.random.get_state()`.
         """
-        self.data['random'] = {'state': random.getstate(),
-                               'timestamp': self._timestamp()}
+        self._data['random'] = {'state': random.getstate(),
+                                'timestamp': self._timestamp()}
 
 
     ## User Data
@@ -120,8 +128,8 @@ class Context:
         :param key:   label for the data. It is recommended to use a string.
         :param data:  user-provided data.
         """
-        self.data.setdefault('data', {})
-        self.data['data'][key] = data
+        self._data.setdefault('data', {})
+        self._data['data'][key] = data
 
 
     ## Version Control Repositories and Git methods
@@ -151,8 +159,8 @@ class Context:
         """
         if (not allow_dirty) and self.git_dirty(allow_untracked=allow_untracked):
             raise RepositoryDirty("Repository '{}' is in a dirty state".format(path))
-        self.data.setdefault('repositories', {})
-        self.data['repositories'][path] = self.git_info(path, diff=diff)
+        self._data.setdefault('repositories', {})
+        self._data['repositories'][path] = self.git_info(path, diff=diff)
 
 
     @classmethod
@@ -242,16 +250,16 @@ class Context:
         :raise ValueError:  if already is False, raise ValueError if the file
                             was already added.
         """
-        if ((not already) and 'files' in self.data
-            and category in self.data['files']
-            and path in self.data['files'][category]):
+        if ((not already) and 'files' in self._data
+            and category in self._data['files']
+            and path in self._data['files'][category]):
             raise ValueError("the '{}' file '{}' is already tracked".format(
                                                                 category, path))
         file_info = {'sha256': self._sha256(path),
                      'mtime': os.path.getmtime(path)}
-        self.data.setdefault('files', {})
-        self.data['files'].setdefault(category, {})
-        self.data['files'][category][path] = file_info
+        self._data.setdefault('files', {})
+        self._data['files'].setdefault(category, {})
+        self._data['files'][category][path] = file_info
 
 
     def _sha256(self, path):
@@ -281,9 +289,9 @@ class Context:
                                   the call to `save_json`.
         """
         if update_timestamp:
-            self.data['timestamp'] = self._timestamp()
+            self._data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
-            json.dump(self.data, f, sort_keys=True, indent=2)
+            json.dump(self._data, f, sort_keys=True, indent=2)
 
     def save_yaml(self, path, update_timestamp=False):
         """Save the tracked data in a YAML file
@@ -301,9 +309,9 @@ class Context:
         if not yaml_available:
             raise ImportError('PyYAML does not seem present or importable.')
         if update_timestamp:
-            self.data['timestamp'] = self._timestamp()
+            self._data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
-            yaml.dump(self.data, f, indent=2)
+            yaml.dump(self._data, f, indent=2)
 
     def export_requirements(self, path):
         raise NotImplementedError
