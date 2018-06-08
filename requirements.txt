@@ -4,9 +4,10 @@
 # The versions installed will be recorded in the provenance data.
 
 GitPython
+pyyaml
+py-cpuinfo
+
 pytest
 pytest-cov
-pyyaml
 sphinx
 sphinx-rtd-theme
-py-cpuinfo

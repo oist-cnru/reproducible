@@ -32,7 +32,7 @@ The reproducible library is licensed under the [LGPL version
 code that use other licenses.
 
 The library is in beta; expect some changes. Python 3.5 or later is officially
-supported, but [the code runs on 2.7 and other versions as
+supported, but [the code runs on 2.7 and 3.4 (but not on 3.3) as
 well](https://travis-ci.org/oist-cnru/reproducible).
 
 
