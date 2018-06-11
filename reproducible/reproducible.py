@@ -157,7 +157,7 @@ class Context:
         :raise FileNotFoundError:  if the path does not exist.
         :raise RepositoryNotFound: if no repository was found.
         """
-        if (not allow_dirty) and self.git_dirty(allow_untracked=allow_untracked):
+        if (not allow_dirty) and self.git_dirty(path, allow_untracked=allow_untracked):
             raise RepositoryDirty("Repository '{}' is in a dirty state".format(path))
         self._data.setdefault('repositories', {})
         self._data['repositories'][path] = self.git_info(path, diff=diff)
@@ -180,7 +180,7 @@ class Context:
         """
         repo = cls._get_repo(path)
         patch = None
-        if repo.is_dirty(untracked_files=False):
+        if diff and repo.is_dirty(untracked_files=False):
             t = repo.head.commit.tree
             patch = repo.git.diff(t, patch=True)
 
@@ -222,9 +222,9 @@ class Context:
         try: # are we in a git repository?
             return git.Repo(path,
                             search_parent_directories=search_parent_directories)
-        except git.exc.InvalidGitRepositoryError as e: # not in a git repo
-            raise RepositoryNotFoundError("git repository not found "
-                                          "at '{}'".format(path))
+        except git.InvalidGitRepositoryError: # not in a git repo
+            raise RepositoryNotFound("git repository not found "
+                                     "at '{}'".format(path))
 
 
     ## Input & Output files
@@ -262,7 +262,8 @@ class Context:
         self._data['files'][category][path] = file_info
 
 
-    def _sha256(self, path):
+    @classmethod
+    def _sha256(cls, path):
         """Compute the SHA256 hash of a file"""
         if not os.path.isfile(path):
             raise FileNotFoundError('file {} was not found'.format(path))
@@ -279,7 +280,8 @@ class Context:
     def save_json(self, path, update_timestamp=False):
         """Save the tracked data in a JSON file
 
-        Will raise error if some of the data is not JSON serializable.
+        Will raise error if some of the data is not JSON serializable. This
+        method will return the SHA256 hexadecimal string of the saved file.
 
         :param update_timestamp:  The global timestamp of the tracked data, is
                                   the time of the creation of the Context
@@ -292,11 +294,13 @@ class Context:
             self._data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
             json.dump(self._data, f, sort_keys=True, indent=2)
+        return self._sha256(path)
 
     def save_yaml(self, path, update_timestamp=False):
         """Save the tracked data in a YAML file
 
-        Will raise error if some of the data is not YAML serializable.
+        Will raise error if some of the data is not YAML serializable. This
+        method will return the SHA256 hexadecimal string of the saved file.
 
         :param update_timestamp:  The global timestamp of the tracked data, is
                                   the time of the creation of the Context
@@ -312,6 +316,7 @@ class Context:
             self._data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
             yaml.dump(self._data, f, indent=2)
+        return self._sha256(path)
 
     def export_requirements(self, path):
         raise NotImplementedError
