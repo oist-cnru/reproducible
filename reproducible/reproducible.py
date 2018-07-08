@@ -22,9 +22,9 @@ except ImportError:
 
 # importing the pip freeze() command, for getting the installed package list.
 try:
-    import pip.commands as pip_cmds
+    from pip.commands import freeze as pip_freeze
 except (ImportError, AttributeError):
-    import pip._internal.commands as pip_cmds
+    from pip._internal.commands import freeze as pip_freeze
 
 
 
@@ -84,7 +84,7 @@ class Context:
                 'cpuinfo'     : cpu_info,
                 # list of installed packages, in requirements
                 # form.
-                'packages'    : list(pip_cmds.freeze.freeze()),
+                'packages'    : list(pip_freeze.freeze()),
                 'timestamp'   : self._timestamp(),
                }
 

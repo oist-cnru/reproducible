@@ -14,3 +14,6 @@ def test_repeatable():
         timestamp_2 = git_data_2.pop('timestamp')
         assert timestamp_1 != timestamp_2
         assert git_data_1 == git_data_2
+
+if __name__ == '__main__':
+    test_repeatable()
