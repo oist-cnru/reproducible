@@ -109,7 +109,7 @@ if __name__ == '__main__':
 ```
 
 This is the resulting yaml file output containing the tracking data:
-```
+```yaml
 argv: [example_after.py]
 data: {n: 10, seed: 1}
 files:
@@ -136,4 +136,4 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 
 - Independent `Context` instances.
 - More configurability.
-- Optionally capturing input, output (`sys.stderr`, `sys.stdout`).
+- Optionally capture input, output (`sys.stderr`, `sys.stdout`).
