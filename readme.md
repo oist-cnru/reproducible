@@ -114,7 +114,7 @@ argv: [example_after.py]
 data: {n: 10, seed: 1}
 files:
   output:
-    results.pickle: {mtime: 1531378526.1395743, sha256: 395d8846640c012e3e5c642e7737173a1a74120275b37fa2ded13a211df3264e}
+    results.pickle: {mtime: 1531381834.0666547, sha256: 395d8846640c012e3e5c642e7737173a1a74120275b37fa2ded13a211df3264e}
 packages: [gitdb2==2.0.3, GitPython==2.1.10, pip==10.0.1, py-cpuinfo==4.0.0, PyYAML==4.2b4,
   reproducible==0.1.2, setuptools==39.0.1, smmap2==2.0.3]
 platform: Darwin-17.6.0-x86_64-i386-64bit
@@ -125,9 +125,9 @@ python:
   revision: ''
   version: !!python/tuple ['3', '7', '0']
 repositories:
-  .: {diff: null, dirty: false, hash: a4b02b7b376a39e7d32eae12771bf69a0631e727, version: git
+  .: {diff: null, dirty: false, hash: 88c1de4ba5fb5cb2564b60245f26d3226ecb20c9, version: git
       version 2.18.0}
-timestamp: !!python/tuple ['2018-07-12T06:55:26.107863Z']
+timestamp: !!python/tuple ['2018-07-12T07:50:34.033829Z']
 ```
 
 See also the The [API Reference](https://reproducible.readthedocs.io/).
