@@ -7,7 +7,7 @@ which parameter values were used back then?
 
 The reproducible library, developped by the [Cognitive Neuro-Robotics
 Unit](https://groups.oist.jp/cnru) at the [Okinawa Institute of Science and
-Technology](http://www.oist.jp/) (OIST), aims to provide an easy way to gather and save
+Technology (OIST)](http://www.oist.jp/), aims to provide an easy way to gather and save
 important information about the context in which a result was computed. This
 includes details about the OS, the Python version, the time, the git commit, the
 command-line arguments, hashes of input and output files, and any user provided
@@ -79,9 +79,9 @@ def walk(n):
     return steps
 
 if __name__ == '__main__':
-    # recording repository state
+    # recording git repository state
     # here we are okay with running our code with uncommitted changes, but
-    # we record a diff of them in the tracked data.
+    # we record a diff of the changes in the tracked data.
     reproducible.add_repo(path='.', allow_dirty=True, diff=True)
 
     # recording parameters; this is not necessarily needed, as the code state
@@ -90,20 +90,44 @@ if __name__ == '__main__':
     random.seed(seed)
     reproducible.add_data('seed', seed)
 
-    n = 10
+    # add_data return the provided value (here 10), so you can do this:
+    n = reproducible.add_data('n', 10)
     results = walk(n)
-    reproducible.add_data('n', n)
 
-    # recording the hash of the output file
     with open('results.pickle', 'wb') as f:
         pickle.dump(results, f)
+    # recording the SHA1 hash of the output file
     reproducible.add_file('results.pickle', category='output')
 
     # you can examine the tracked data and add or remove from it at any moment
-    # by running `reproducible.data()`: it is a simple dictionary
+    # with `reproducible.data()`: it is a simple dictionary. For instance, the
+    # cpu info is quite detailed. Let's remove it to keep the yaml output short.
+    reproducible.data().pop('cpuinfo')
 
-    # saving the provenance data
+    # exporting the provenance data to disk
     reproducible.save_yaml('results_prov.yaml')
+```
+
+This is the resulting yaml file output containing the tracking data:
+```
+argv: [example_after.py]
+data: {n: 10, seed: 1}
+files:
+  output:
+    results.pickle: {mtime: 1531378526.1395743, sha256: 395d8846640c012e3e5c642e7737173a1a74120275b37fa2ded13a211df3264e}
+packages: [gitdb2==2.0.3, GitPython==2.1.10, pip==10.0.1, py-cpuinfo==4.0.0, PyYAML==4.2b4,
+  reproducible==0.1.2, setuptools==39.0.1, smmap2==2.0.3]
+platform: Darwin-17.6.0-x86_64-i386-64bit
+python:
+  branch: ''
+  compiler: Clang 9.1.0 (clang-902.0.39.2)
+  implementation: CPython
+  revision: ''
+  version: !!python/tuple ['3', '7', '0']
+repositories:
+  .: {diff: null, dirty: false, hash: a4b02b7b376a39e7d32eae12771bf69a0631e727, version: git
+      version 2.18.0}
+timestamp: !!python/tuple ['2018-07-12T06:55:26.107863Z']
 ```
 
 See also the The [API Reference](https://reproducible.readthedocs.io/).

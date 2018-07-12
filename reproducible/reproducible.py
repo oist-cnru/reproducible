@@ -73,20 +73,22 @@ class Context:
         return self._data
 
     def _collect_basic_data(self, cpuinfo):
-        cpu_info = get_cpu_info() if cpuinfo else None
-        return {'python' : {'implementation': platform.python_implementation(),
+        data = {'python' : {'implementation': platform.python_implementation(),
                                   'version' : platform.python_version_tuple(),
                                   'compiler': platform.python_compiler(),
                                   'branch'  : platform.python_branch(),
                                   'revision': platform.python_revision()},
                 'argv'        : copy.copy(sys.argv),
                 'platform'    : platform.platform(),
-                'cpuinfo'     : cpu_info,
-                # list of installed packages, in requirements
-                # form.
+                # list of installed packages, in requirements form.
                 'packages'    : list(pip_freeze.freeze()),
                 'timestamp'   : self._timestamp(),
                }
+        if cpuinfo:
+            data['cpuinfo'] = get_cpu_info()
+        return data
+
+
 
     @classmethod
     def _timestamp(cls):
@@ -130,6 +132,7 @@ class Context:
         """
         self._data.setdefault('data', {})
         self._data['data'][key] = data
+        return data
 
 
     ## Version Control Repositories and Git methods
