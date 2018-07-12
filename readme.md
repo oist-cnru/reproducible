@@ -131,3 +131,9 @@ timestamp: !!python/tuple ['2018-07-12T07:50:34.033829Z']
 ```
 
 See also the The [API Reference](https://reproducible.readthedocs.io/).
+
+## Roadmap
+
+- Independent `Context` instances.
+- More configurability.
+- Optionally capturing input, output (`sys.stderr`, `sys.stdout`).
