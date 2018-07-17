@@ -142,7 +142,10 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 
 ## Changelog
 
-** development version **
+**version 0.2.1**, *20170717*
+- add readme, license to pypi package.
+
+**version 0.2.0**, *20170717*
 - renamed `save_json()` and `save_yaml()` as `export_json()` and
   `export_yaml()`. The old name remain for now with a deprecation warning.
 - `Context` instances for more flexible, non-module level, behavior, much like
@@ -155,11 +158,11 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 - Fix import of the freeze command from the `pip` package.
 - Updated readme: yaml output of the example, roadmap, changlog.
 
-** version 0.1.2**, *20170611*
+**version 0.1.2**, *20170611*
 - Various bug fixes.
 - The `save_json()` and `save_yaml()` functions now return the SHA256 hash of the file they produce.
 
-** version 0.1.1**, *20170608*
+**version 0.1.1**, *20170608*
 - `reproducible.data()` function to access and modify the collected data.
 - more unit tests
 

@@ -13,7 +13,7 @@ with open(os.path.join(here, 'readme.md'), 'r') as fd:
 
 setuptools.setup(
     name='reproducible',
-    version='0.2.0',
+    version='0.2.1',
 
     description='Reproducible library',
     long_description=long_description,
@@ -48,6 +48,11 @@ setuptools.setup(
 
     # where is our code
     packages=['reproducible'],
+
+    # include readme and license file.
+    package_data={'': ['readme.md', 'license.md']},
+    data_files=[('.',['readme.md', 'license.md'])],
+    include_package_data=True,
 
     # required dependencies
     install_requires=['gitpython', 'pyyaml', 'py-cpuinfo'],
