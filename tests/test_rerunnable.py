@@ -33,6 +33,12 @@ def test_rerunnable_module():
     reproducible.export_yaml(os.path.join(tmp_path, 'provdata.yaml'),
                              update_timestamp=True)
     os.remove(os.path.join(tmp_path, 'provdata.yaml'))
+    reproducible.save_json(os.path.join(tmp_path, 'provdata.json'),
+                             update_timestamp=True)
+    os.remove(os.path.join(tmp_path, 'provdata.json'))
+    reproducible.save_yaml(os.path.join(tmp_path, 'provdata.yaml'),
+                             update_timestamp=True)
+    os.remove(os.path.join(tmp_path, 'provdata.yaml'))
     reproducible.export_requirements(os.path.join(tmp_path, 'reqs.txt'))
     os.remove(os.path.join(tmp_path, 'reqs.txt'))
 

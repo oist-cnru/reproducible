@@ -5,6 +5,7 @@ import json
 import random
 import hashlib
 import inspect
+import warnings
 import platform
 from datetime import datetime
 
@@ -307,7 +308,7 @@ class Context:
     def save_json(self, *args, **kwargs):
         warnings.warn('`save_json` has been renamed `export_json`. It will be '
                       'removed in a future version', DeprecationWarning)
-        return export_json(*args, **kwargs)
+        return self.export_json(*args, **kwargs)
 
     def export_json(self, path, update_timestamp=False):
         """Export the tracked data as a JSON file
@@ -331,7 +332,7 @@ class Context:
     def save_yaml(self, *args, **kwargs):
         warnings.warn('`save_yaml` has been renamed `export_yaml`. It will be '
                       'removed in a future version', DeprecationWarning)
-        return export_yaml(*args, **kwargs)
+        return self.export_yaml(*args, **kwargs)
 
     def export_yaml(self, path, update_timestamp=False):
         """Export the tracked data as a YAML file
