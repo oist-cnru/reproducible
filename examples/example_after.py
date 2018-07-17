@@ -38,3 +38,4 @@ if __name__ == '__main__':
 
     # exporting the provenance data to disk
     reproducible.save_yaml('results_prov.yaml')
+    reproducible.export_requirements('requirements_full.txt')

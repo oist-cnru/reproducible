@@ -17,6 +17,7 @@ add_random_state = _context.add_random_state
 
 save_json        = _context.save_json
 save_yaml        = _context.save_yaml
+export_requirements = _context.export_requirements
 
 git_info         = _context.git_info
 git_dirty        = _context.git_dirty

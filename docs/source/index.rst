@@ -31,6 +31,7 @@ Export Functions
 
 .. autofunction:: reproducible.save_json
 .. autofunction:: reproducible.save_yaml
+.. autofunction:: reproducible.export_requirements
 
 
 Git Repository Functions

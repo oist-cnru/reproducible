@@ -31,6 +31,8 @@ def test_rerunnable_module():
     reproducible.save_yaml(os.path.join(tmp_path, 'provdata.yaml'),
                            update_timestamp=True)
     os.remove(os.path.join(tmp_path, 'provdata.yaml'))
+    reproducible.export_requirements(os.path.join(tmp_path, 'reqs.txt'))
+    os.remove(os.path.join(tmp_path, 'reqs.txt'))
 
     reproducible.git_dirty('.')
     reproducible.git_info('.', diff=True)

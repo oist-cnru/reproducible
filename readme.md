@@ -134,15 +134,17 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 
 ## Roadmap
 
-- Independent `Context` instances.
 - Retrieve GPU information.
 - More configurability.
 - Optionally capture input, output (`sys.stderr`, `sys.stdout`).
 - Easy disabling/reenabling of reproducible
+- Creation of `requirements.txt` files.
 
 ## Changelog
 
 ** development version **
+- `Context` instances for more flexible, non-module level, behavior, much like
+  the `Random` instances of the standard `random` module.
 - Add the `reproducible.function_args()` function to retrieve arguments from
   inside a function
 - Fix import of the freeze command from the `pip` package.
