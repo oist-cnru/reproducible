@@ -23,6 +23,7 @@ tracking data will always include:
 .. autofunction:: reproducible.add_repo
 .. autofunction:: reproducible.add_file
 .. autofunction:: reproducible.add_data
+.. autofunction:: reproducible.function_args
 .. autofunction:: reproducible.add_random_state
 
 Export Functions

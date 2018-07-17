@@ -135,5 +135,26 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 ## Roadmap
 
 - Independent `Context` instances.
+- Retrieve GPU information.
 - More configurability.
 - Optionally capture input, output (`sys.stderr`, `sys.stdout`).
+- Easy disabling/reenabling of reproducible
+
+## Changelog
+
+** development version **
+- Add the `reproducible.function_args()` function to retrieve arguments from
+  inside a function
+- Fix import of the freeze command from the `pip` package.
+- Updated readme: yaml output of the example, roadmap, changlog.
+
+** version 0.1.2**, *20170611*
+- Various bug fixes.
+- The `save_json()` and `save_yaml()` functions now return the SHA256 hash of the file they produce.
+
+** version 0.1.1**, *20170608*
+- `reproducible.data()` function to access and modify the collected data.
+- more unit tests
+
+** version 0.1.0**, *20170607*
+- first version: `add_repo()`, `add_file()`, `add_data()`, `add_random_state()`, `git_info()`, `git_dirty()`, `save_json()`, `save_yaml()` functions.

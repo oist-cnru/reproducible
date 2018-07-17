@@ -8,6 +8,8 @@ _context = Context(repo_path=None)
 
 data             = _context.data
 
+function_args    = _context.function_args
+
 add_repo         = _context.add_repo
 add_file         = _context.add_file
 add_data         = _context.add_data

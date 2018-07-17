@@ -4,6 +4,7 @@ import copy
 import json
 import random
 import hashlib
+import inspect
 import platform
 from datetime import datetime
 
@@ -88,11 +89,28 @@ class Context:
             data['cpuinfo'] = get_cpu_info()
         return data
 
-
-
     @classmethod
     def _timestamp(cls):
         return datetime.utcnow().isoformat()+'Z',  # Z stands for UTC
+
+
+    ## Function Arguments
+
+    def function_args(self):
+        """Return a function's arguments value from inside the function.
+
+        The function must be called from inside the function to return the
+        arguments from. The arguments' value will be returned as a name -> value
+        dictionary. No difference is made between positional and provided-or-not
+        keyword arguments. Default values of non-provided keyword arguments are
+        included in the dictionary.
+
+        Note that this function does not add any information to the tracked
+        context data. Use `add_data()` with the return of this function to do
+        that.
+        """
+        frame = inspect.stack(context=1)[1][0]
+        return inspect.getargvalues(frame).locals
 
 
     ## Get Random State
