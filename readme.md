@@ -138,7 +138,7 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 - More configurability.
 - Optionally capture input, output (`sys.stderr`, `sys.stdout`).
 - Easy disabling/reenabling of reproducible
-- Creation of `requirements.txt` files.
+- optional SHA256 in the filename of external files
 
 ## Changelog
 
@@ -149,6 +149,7 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
   the `Random` instances of the standard `random` module.
 - `reproducible.function_args()` function to retrieve arguments from inside a
   function.
+- `reproducible.reset()` function for clearing tracked data.
 - `reproducible.export_requirements()` to create requirements files from the
   retrieved list of installed packages.
 - Fix import of the freeze command from the `pip` package.
