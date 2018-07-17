@@ -18,6 +18,8 @@ here = os.path.dirname(__file__)
 
 def test_rerunnable_module():
     """Test that the main methods work"""
+    # reset
+    reproducible.reset(repo_path=None)
 
     reproducible.add_random_state()
     reproducible.add_repo('.', allow_dirty=True)
@@ -37,4 +39,7 @@ def test_rerunnable_module():
     reproducible.git_dirty('.')
     reproducible.git_info('.', diff=True)
 
-    reproducible.data
+    reproducible.data()
+
+if __name__ == '__main__':
+    test_rerunnable_module()

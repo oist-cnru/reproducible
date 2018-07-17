@@ -4,8 +4,6 @@ import reproducible
 
 def test_function_args():
     """Test the behavior of `reproducible.function_args()`"""
-    assert len(reproducible.function_args()) == 0
-
     def f1(a, b, c):
         return reproducible.function_args()
 

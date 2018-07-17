@@ -6,6 +6,7 @@ from .reproducible import Context
 # similarly to the `random` standart module.
 _context = Context(repo_path=None)
 
+reset            = _context.reset
 data             = _context.data
 
 function_args    = _context.function_args
