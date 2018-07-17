@@ -105,7 +105,7 @@ if __name__ == '__main__':
     reproducible.data().pop('cpuinfo')
 
     # exporting the provenance data to disk
-    reproducible.save_yaml('results_prov.yaml')
+    reproducible.export_yaml('results_prov.yaml')
 ```
 
 This is the resulting yaml file output containing the tracking data:
@@ -143,10 +143,14 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 ## Changelog
 
 ** development version **
+- renamed `save_json()` and `save_yaml()` as `export_json()` and
+  `export_yaml()`. The old name remain for now with a deprecation warning.
 - `Context` instances for more flexible, non-module level, behavior, much like
   the `Random` instances of the standard `random` module.
-- Add the `reproducible.function_args()` function to retrieve arguments from
-  inside a function
+- `reproducible.function_args()` function to retrieve arguments from inside a
+  function.
+- `reproducible.export_requirements()` to create requirements files from the
+  retrieved list of installed packages.
 - Fix import of the freeze command from the `pip` package.
 - Updated readme: yaml output of the example, roadmap, changlog.
 

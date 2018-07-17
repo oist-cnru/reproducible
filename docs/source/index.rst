@@ -29,8 +29,8 @@ tracking data will always include:
 Export Functions
 ~~~~~~~~~~~~~~~~
 
-.. autofunction:: reproducible.save_json
-.. autofunction:: reproducible.save_yaml
+.. autofunction:: reproducible.export_json
+.. autofunction:: reproducible.export_yaml
 .. autofunction:: reproducible.export_requirements
 
 
