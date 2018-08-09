@@ -1,3 +1,5 @@
+<div style="text-align: right">[[documentation](https://reproducible.readthedocs.io/)] [[github](https://github.com/oist-cnru/reproducible.git)] [[cnru website](https://groups.oist.jp/cnru)]</div>
+
 # The Reproducible Python Library
 *Keep track of your results.*
 
@@ -20,7 +22,7 @@ They each have their own design philosophy, which proved to be difficult to
 interface with some of the workflows of the Cognitive Neuro-Robotics
 Unit lab at OIST.
 
-With [Reproducible](https://github.com/oist-cnru/reproducible.git) the goal was
+With [reproducible](https://github.com/oist-cnru/reproducible.git) the goal was
 to have a small non-intrusive library allowing precise control over the data
 collected and how to output it. In particular, the goal was to have the tracking
 info sitting next to—or better, directly embedded in—the result files. That
@@ -141,6 +143,9 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 - optional SHA256 in the filename of external files
 
 ## Changelog
+
+**version 0.2.4**, *20170809*
+- hotfix for Python 2.7---because I am stupid.
 
 **version 0.2.3**, *20170809*
 - add `json()`, `yaml()` and `requirements()` function to access the result
