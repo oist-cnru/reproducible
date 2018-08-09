@@ -376,9 +376,9 @@ class Context:
         """Return a list of the installed packages.
 
         Note that if a package has been installed, changed or removed since
-        the creation of the Context instance—or the import of reproducible when
-        using module-level functions—this call will update the `packages` field
-        in the tracked data.
+        the creation of the Context instance---or the import of reproducible
+        when using module-level functions---this call will update the `packages`
+        field in the tracked data.
 
         The result is a list of strings, gathered from the results of
         `pip freeze`.
