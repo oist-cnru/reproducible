@@ -29,9 +29,16 @@ tracking data will always include:
 Export Functions
 ~~~~~~~~~~~~~~~~
 
+All export function exists in two flavor. Those that export to the disk, and
+those that return their output.
+
 .. autofunction:: reproducible.export_json
 .. autofunction:: reproducible.export_yaml
 .. autofunction:: reproducible.export_requirements
+
+.. autofunction:: reproducible.json
+.. autofunction:: reproducible.yaml
+.. autofunction:: reproducible.requirements
 
 
 Git Repository Functions
@@ -42,3 +49,12 @@ be used to access the state of the git repository directly.
 
 .. autofunction:: reproducible.git_info
 .. autofunction:: reproducible.git_dirty
+
+
+Deprecated Functions
+~~~~~~~~~~~~~~~~~~~~
+
+Those function are likely to get removed in one of the next release.
+
+.. autofunction:: reproducible.save_json
+.. autofunction:: reproducible.save_yaml

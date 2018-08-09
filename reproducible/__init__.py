@@ -1,4 +1,4 @@
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 from .reproducible import Context
 
@@ -16,6 +16,9 @@ add_file         = _context.add_file
 add_data         = _context.add_data
 add_random_state = _context.add_random_state
 
+json                = _context.json
+yaml                = _context.yaml
+requirements        = _context.requirements
 export_json         = _context.export_json
 export_yaml         = _context.export_yaml
 export_requirements = _context.export_requirements

@@ -4,6 +4,9 @@ examples/results_prov.json
 examples/results_prov.yaml
 examples/requirements_full.txt
 
+# release checklist
+release_checklist.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

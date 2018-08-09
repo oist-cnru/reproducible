@@ -142,6 +142,15 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 
 ## Changelog
 
+**version 0.2.3**, *20170809*
+- add `json()`, `yaml()` and `requirements()` function to access the result
+  of export functions programmatically.
+- YAML output is now generated using `yaml.safe_dump` rather than `yaml.dump`.
+  Leads to safer and simpler output.
+
+**version 0.2.2**, *20170717*
+- fix for deprecated `save_yaml()`, `save_json()` functions.
+
 **version 0.2.1**, *20170717*
 - add readme, license to pypi package.
 
@@ -166,5 +175,5 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 - `reproducible.data()` function to access and modify the collected data.
 - more unit tests
 
-** version 0.1.0**, *20170607*
+**version 0.1.0**, *20170607*
 - first version: `add_repo()`, `add_file()`, `add_data()`, `add_random_state()`, `git_info()`, `git_dirty()`, `save_json()`, `save_yaml()` functions.
