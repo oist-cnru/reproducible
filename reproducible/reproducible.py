@@ -346,7 +346,7 @@ class Context:
         """
         if update_timestamp:
             self._data['timestamp'] = self._timestamp()
-        return yaml.safe_dump(self._data, indent=2)
+        return yaml.safe_dump(self._data, indent=2, allow_unicode=True)
 
     def export_yaml(self, path=None, update_timestamp=False):
         """Export the tracked data as a YAML file
@@ -369,7 +369,7 @@ class Context:
         if update_timestamp:
             self._data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
-            yaml.safe_dump(self._data, f, indent=2)
+            yaml.safe_dump(self._data, f, indent=2, allow_unicode=True)
         return self._sha256(path)
 
     def requirements(self):
