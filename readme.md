@@ -1,4 +1,4 @@
-<div style="text-align: right">[[documentation](https://reproducible.readthedocs.io/)] [[github](https://github.com/oist-cnru/reproducible.git)] [[cnru website](https://groups.oist.jp/cnru)]</div>
+[[documentation](https://reproducible.readthedocs.io/)] [[github](https://github.com/oist-cnru/reproducible.git)] [[cnru website](https://groups.oist.jp/cnru)]
 
 # The Reproducible Python Library
 *Keep track of your results.*
