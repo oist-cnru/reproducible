@@ -56,7 +56,7 @@ class Context:
                      therefore may behave differently on different processors.
     """
 
-    def __init__(self, repo_path='.', allow_dirty=False, allow_untracked=False,
+    def __init__(self, repo_path=None, allow_dirty=False, allow_untracked=False,
                        diff=True, cpuinfo=True):
         self.reset(repo_path=repo_path, allow_dirty=allow_dirty,
                    allow_untracked=allow_untracked, diff=diff, cpuinfo=cpuinfo)
@@ -173,8 +173,6 @@ class Context:
 
         :param path:         the path to the repository. If a repository is not
                              found there,
-        :param allow_dirty:  if False, will exit with an error if the git
-                             repository is dirty or absent.
         :param allow_dirty:  if False, will exit with an error if the git
                              repository is dirty or absent.
         :param diff:         if True and uncommited changes are present in the

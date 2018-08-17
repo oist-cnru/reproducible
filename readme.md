@@ -125,11 +125,11 @@ python:
   compiler: Clang 9.1.0 (clang-902.0.39.2)
   implementation: CPython
   revision: ''
-  version: !!python/tuple ['3', '7', '0']
+  version: ['3', '7', '0']
 repositories:
   .: {diff: null, dirty: false, hash: 88c1de4ba5fb5cb2564b60245f26d3226ecb20c9, version: git
       version 2.18.0}
-timestamp: !!python/tuple ['2018-07-12T07:50:34.033829Z']
+timestamp: ['2018-07-12T07:50:34.033829Z']
 ```
 
 See also the The [API Reference](https://reproducible.readthedocs.io/).
