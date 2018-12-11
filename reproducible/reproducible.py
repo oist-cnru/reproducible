@@ -7,6 +7,7 @@ import hashlib
 import inspect
 import warnings
 import platform
+import subprocess
 from datetime import datetime
 
 # GitPython
@@ -21,13 +22,6 @@ try:
     yaml_available = True
 except ImportError:
     yaml_available = False
-
-# importing the pip freeze() command, for getting the installed package list.
-try:
-    from pip.commands import freeze as pip_freeze
-except (ImportError, AttributeError):
-    from pip._internal.commands import freeze as pip_freeze
-
 
 
 class RepositoryNotFound(Exception):
@@ -89,12 +83,16 @@ class Context:
                 'argv'        : copy.copy(sys.argv),
                 'platform'    : platform.platform(),
                 # list of installed packages, in requirements form.
-                'packages'    : list(pip_freeze.freeze()),
+                'packages'    : self._pip_freeze(),
                 'timestamp'   : self._timestamp(),
                }
         if cpuinfo:
             data['cpuinfo'] = get_cpu_info()
         return data
+
+    def _pip_freeze(self):
+        output =  subprocess.check_output(['pip', 'freeze', '-qq'])
+        return output.decode().split('\n')[:-1]
 
     @classmethod
     def _timestamp(cls):
@@ -381,8 +379,7 @@ class Context:
         The result is a list of strings, gathered from the results of
         `pip freeze`.
         """
-        self._data['packages'] = list(pip_freeze.freeze())
-        list(pip_freeze.freeze()),
+        self._data['packages'] = self._pip_freeze()
         return self._data['packages']
 
 
