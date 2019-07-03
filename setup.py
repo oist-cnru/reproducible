@@ -13,7 +13,7 @@ with open(os.path.join(here, 'readme.md'), 'r') as fd:
 
 setuptools.setup(
     name='reproducible',
-    version='0.2.4',
+    version='0.3.0',
 
     description='Reproducible library',
     long_description=long_description,
@@ -55,7 +55,7 @@ setuptools.setup(
     include_package_data=True,
 
     # required dependencies
-    install_requires=['gitpython', 'pyyaml', 'py-cpuinfo'],
+    install_requires=['gitpython', 'pyyaml', 'py-cpuinfo<5.0.0'],
 
     # you can install extras_require with
     # $ pip install -e .[test]

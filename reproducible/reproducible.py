@@ -39,9 +39,9 @@ class Context:
     """The `Context` class gathers the provenance data, some automatically
     (e.g. OS, Python version, git commit) and some user-provided.
 
-    The parameters `repo_path`, `allow_dirty`, `allow_untracked`, `diff` are the
-    same of the method `add_repo()`. Refer to this method for their
-    documentation.
+    The data being tracked can be freely accessed and edited through the
+    `.data` attribute. Any subsequent reproducible method that requires a
+    specific structure in the dictionary will recreate it.
 
     :param cpuinfo:  if True, detailed information from the CPU is included.
                      Detailed information about the processor capabilities can
@@ -50,31 +50,19 @@ class Context:
                      therefore may behave differently on different processors.
     """
 
-    def __init__(self, repo_path=None, allow_dirty=False, allow_untracked=False,
-                       diff=True, cpuinfo=True):
-        self.reset(repo_path=repo_path, allow_dirty=allow_dirty,
-                   allow_untracked=allow_untracked, diff=diff, cpuinfo=cpuinfo)
+    def __init__(self, cpuinfo=True, pip_packages=False):
+        self.collect_cpuinfo      = cpuinfo
+        self.collect_pip_packages = pip_packages
+        self.reset()
 
-    def reset(self, repo_path='.', allow_dirty=False, allow_untracked=False,
-                    diff=True, cpuinfo=True):
+    def reset(self):
         """Reset the context data"""
-        self._data = self._collect_basic_data(cpuinfo=cpuinfo)
-        if repo_path is not None:
-            self.add_repo(path=repo_path, allow_dirty=allow_dirty,
-                          allow_untracked=allow_untracked, diff=diff)
-
+        self.data = self._collect_basic_data(cpuinfo=self.collect_cpuinfo,
+                        pip_packages=self.collect_pip_packages)
 
     ## Basic Stuff
 
-    def data(self):
-        """Return the current tracked information, as a dictionary.
-
-        This dictionary can be freely edited. Any subsequent reproducible method
-        that requires a specific structure in the dictionary will recreate it.
-        """
-        return self._data
-
-    def _collect_basic_data(self, cpuinfo):
+    def _collect_basic_data(self, cpuinfo=True, pip_packages=True):
         data = {'python' : {'implementation': platform.python_implementation(),
                                   'version' : platform.python_version_tuple(),
                                   'compiler': platform.python_compiler(),
@@ -83,16 +71,14 @@ class Context:
                 'argv'        : copy.copy(sys.argv),
                 'platform'    : platform.platform(),
                 # list of installed packages, in requirements form.
-                'packages'    : self._pip_freeze(),
+                'packages'    : None,
                 'timestamp'   : self._timestamp(),
                }
         if cpuinfo:
             data['cpuinfo'] = get_cpu_info()
+        if pip_packages:
+            data['packages'] = self._pip_freeze()
         return data
-
-    def _pip_freeze(self):
-        output =  subprocess.check_output(['pip', 'freeze', '-qq'])
-        return output.decode().split('\n')[:-1]
 
     @classmethod
     def _timestamp(cls):
@@ -138,7 +124,7 @@ class Context:
         `record_data()` method, and provide either the seed used or the
         result of the `numpy.random.get_state()`.
         """
-        self._data['random'] = {'state': random.getstate(),
+        self.data['random'] = {'state': random.getstate(),
                                 'timestamp': self._timestamp()}
 
 
@@ -153,8 +139,8 @@ class Context:
         :param key:   label for the data. It is recommended to use a string.
         :param data:  user-provided data.
         """
-        self._data.setdefault('data', {})
-        self._data['data'][key] = data
+        self.data.setdefault('data', {})
+        self.data['data'][key] = data
         return data
 
 
@@ -183,8 +169,8 @@ class Context:
         """
         if (not allow_dirty) and self.git_dirty(path, allow_untracked=allow_untracked):
             raise RepositoryDirty("Repository '{}' is in a dirty state".format(path))
-        self._data.setdefault('repositories', {})
-        self._data['repositories'][path] = self.git_info(path, diff=diff)
+        self.data.setdefault('repositories', {})
+        self.data['repositories'][path] = self.git_info(path, diff=diff)
 
 
     @classmethod
@@ -253,7 +239,7 @@ class Context:
 
     ## Input & Output files
 
-    def add_file(self, path, category, already=False):
+    def add_file(self, path, category='', already=True):
         """
         Compute and store the SHA256 hash of a file, as well as its modification
         time (mtime).
@@ -262,28 +248,28 @@ class Context:
         :param category:    group label for the file, for instance 'input',
                             'output', 'log', etc. Beside allowing to organize
                             the files into categories, this is also important
-                            for the `already` flag.
-        :param already:     if True, will not raise ValueError if the file was
-                            already added *with the same group label*. In some
-                            workflows, an input file is also an output file
-                            later, and `reproducible` can track both state of
-                            the file, as long as they are added under different
-                            labels (presumably 'input' and 'output' in this
-                            case). If False, the existing entry, if any, will be
-                            overwritten.
+                            when the `already` flag is `True`.
+        :param already:     if `True`, will not raise `ValueError` if the file
+                            was already added *with the same group label*. In
+                            some workflows, an input file is also an output
+                            file later, and `reproducible` can track both state
+                            of the file, as long as they are added under
+                            different labels (presumably 'input' and 'output'
+                            in this case). If `False`, the existing entry, if
+                            any, will be overwritten.
         :raise ValueError:  if already is False, raise ValueError if the file
                             was already added.
         """
-        if ((not already) and 'files' in self._data
-            and category in self._data['files']
-            and path in self._data['files'][category]):
+        if ((not already) and 'files' in self.data
+            and category in self.data['files']
+            and path in self.data['files'][category]):
             raise ValueError("the '{}' file '{}' is already tracked".format(
                                                                 category, path))
         file_info = {'sha256': self._sha256(path),
                      'mtime': os.path.getmtime(path)}
-        self._data.setdefault('files', {})
-        self._data['files'].setdefault(category, {})
-        self._data['files'][category][path] = file_info
+        self.data.setdefault('files', {})
+        self.data['files'].setdefault(category, {})
+        self.data['files'][category][path] = file_info
 
 
     @classmethod
@@ -308,8 +294,8 @@ class Context:
                                  data. Default False.
         """
         if update_timestamp:
-            self._data['timestamp'] = self._timestamp()
-        return json.dumps(self._data, sort_keys=True, indent=2)
+            self.data['timestamp'] = self._timestamp()
+        return json.dumps(self.data, sort_keys=True, indent=2)
 
     def export_json(self, path, update_timestamp=False):
         """Export the tracked data as a JSON file
@@ -323,13 +309,13 @@ class Context:
                                   the time of the creation of the Context
                                   instance, which happens at importing time,
                                   if using the module-level functions.
-                                  If True, the timestamp will become the date of
-                                  the call to `export_json`.
+                                  If True, the timestamp will become the date
+                                  of the call to `export_json`.
         """
         if update_timestamp:
-            self._data['timestamp'] = self._timestamp()
+            self.data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
-            json.dump(self._data, f, sort_keys=True, indent=2)
+            json.dump(self.data, f, sort_keys=True, indent=2)
         return self._sha256(path)
 
 
@@ -341,8 +327,8 @@ class Context:
                                  data. Default False.
         """
         if update_timestamp:
-            self._data['timestamp'] = self._timestamp()
-        return yaml.safe_dump(self._data, indent=2, allow_unicode=True)
+            self.data['timestamp'] = self._timestamp()
+        return yaml.safe_dump(self.data, indent=2, allow_unicode=True)
 
     def export_yaml(self, path=None, update_timestamp=False):
         """Export the tracked data as a YAML file
@@ -363,10 +349,31 @@ class Context:
         if not yaml_available:
             raise ImportError('PyYAML does not seem present or importable.')
         if update_timestamp:
-            self._data['timestamp'] = self._timestamp()
+            self.data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
-            yaml.safe_dump(self._data, f, indent=2, allow_unicode=True)
+            yaml.safe_dump(self.data, f, indent=2, allow_unicode=True)
         return self._sha256(path)
+
+
+    ## Packages
+
+    # TODO: support conda
+
+    def _pip_freeze(self):
+        output =  subprocess.check_output(['pip', 'freeze', '-qq'])
+        return output.decode().split('\n')[:-1]
+
+    def add_pip_packages(self):
+        """Gather and add the list of installed packages to the tracked data.
+
+        :return:  the packages, as a list of strings.
+
+        This function calls `pip freeze`, which may be slow or absent, and this
+        may be undesirable in some environment. It must be called manually.
+        Note that `pip freeze` may report an incomplete or incorrect list.
+        """
+        self.data['packages'] = self._pip_freeze()
+        return self.data['packages']
 
     def requirements(self):
         """Return a list of the installed packages.
@@ -379,11 +386,12 @@ class Context:
         The result is a list of strings, gathered from the results of
         `pip freeze`.
         """
-        self._data['packages'] = self._pip_freeze()
-        return self._data['packages']
+        warnings.warn('`requirements` has been renamed `add_pip_packages`.'
+                      ' It will be removed in a future version',
+                      DeprecationWarning)
+        return self.add_pip_packages()
 
-
-    def export_requirements(self, path, message=None, track_category=None):
+    def export_requirements(self, path, message=None):
         """Export the list of installed package as a requirements.txt file.
 
         :param path:    The filepath to save the file, e.g: `path/to/reqs.txt`
@@ -391,11 +399,12 @@ class Context:
         :param message: If not None, the message will be included after the
                         header and before the requirements.
         """
-        data = self.data()
-        req_str = '\n'.join(req for req in data['packages'])
+        if self.data['packages'] is None:
+            self.add_pip_packages()
+        req_str = '\n'.join(req for req in self.data['packages'])
         header = ('# Requirements generated by reproducible\n'
-                  '# under {} {}, on {}\n'.format(data['python']['implementation'],
-                                           '.'.join(data['python']['version']),
+                  '# under {} {}, on {}\n'.format(self.data['python']['implementation'],
+                                           '.'.join(self.data['python']['version']),
                                            self._timestamp()))
         if message is None:
             message = ''

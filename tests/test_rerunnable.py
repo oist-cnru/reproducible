@@ -19,7 +19,7 @@ here = os.path.dirname(__file__)
 def test_rerunnable_module():
     """Test that the main methods work"""
     # reset
-    reproducible.reset(repo_path=None)
+    reproducible.reset()
 
     reproducible.add_random_state()
     reproducible.add_repo('.', allow_dirty=True)
@@ -28,7 +28,7 @@ def test_rerunnable_module():
 
     reproducible.json()
     reproducible.yaml()
-    reproducible.requirements()
+    reproducible.add_pip_packages()
 
     tmp_path = tempfile.gettempdir()
     reproducible.export_json(os.path.join(tmp_path, 'provdata.json'),
@@ -43,11 +43,14 @@ def test_rerunnable_module():
     reproducible.git_dirty('.')
     reproducible.git_info('.', diff=True)
 
-    reproducible.data()
+    reproducible.data
+
 
 
 def test_deprecated():
     """Test that the deprecated methods still work"""
+    return
+    reproducible.requirements()
     tmp_path = tempfile.gettempdir()
     reproducible.save_json(os.path.join(tmp_path, 'provdata.json'),
                              update_timestamp=True)
@@ -59,3 +62,4 @@ def test_deprecated():
 
 if __name__ == '__main__':
     test_rerunnable_module()
+    test_deprecated()

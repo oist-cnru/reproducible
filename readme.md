@@ -1,5 +1,3 @@
-[[documentation](https://reproducible.readthedocs.io/)] [[github](https://github.com/oist-cnru/reproducible.git)] [[cnru website](https://groups.oist.jp/cnru)]
-
 # The Reproducible Python Library
 *Keep track of your results.*
 
@@ -81,16 +79,20 @@ def walk(n):
     return steps
 
 if __name__ == '__main__':
+    # create a reproducible.Context instance, that will hold all the
+    # tracked data.
+    context = reproducible.Context()
+
     # recording git repository state
     # here we are okay with running our code with uncommitted changes, but
     # we record a diff of the changes in the tracked data.
-    reproducible.add_repo(path='.', allow_dirty=True, diff=True)
+    context.add_repo(path='.', allow_dirty=True, diff=True)
 
     # recording parameters; this is not necessarily needed, as the code state
     # is recorded, but it is convenient.
     seed = 1
     random.seed(seed)
-    reproducible.add_data('seed', seed)
+    context.add_data('seed', seed)
 
     # add_data return the provided value (here 10), so you can do this:
     n = reproducible.add_data('n', 10)
@@ -99,15 +101,15 @@ if __name__ == '__main__':
     with open('results.pickle', 'wb') as f:
         pickle.dump(results, f)
     # recording the SHA1 hash of the output file
-    reproducible.add_file('results.pickle', category='output')
+    context.add_file('results.pickle', category='output')
 
     # you can examine the tracked data and add or remove from it at any moment
-    # with `reproducible.data()`: it is a simple dictionary. For instance, the
+    # with `context.data`: it is a simple dictionary. For instance, the
     # cpu info is quite detailed. Let's remove it to keep the yaml output short.
-    reproducible.data().pop('cpuinfo')
+    context.data.pop('cpuinfo')
 
     # exporting the provenance data to disk
-    reproducible.export_yaml('results_prov.yaml')
+    context.export_yaml('results_prov.yaml')
 ```
 
 This is the resulting yaml file output containing the tracking data:
@@ -143,6 +145,16 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 - optional SHA256 in the filename of external files
 
 ## Changelog
+
+**version 0.3.0**, *20190703*
+This version introduces API and logic-breaking changes.
+- `add_file()` overwrites by default now, and category is now an optional argument.
+- `context.data()` becomes `context.data`.
+- `Context(repo_path='.', allow_dirty=False, allow_untracked=False, diff=True, cpuinfo=True)`
+  becomes `Context(cpuinfo=True, pip_packages=True)`: `add_repo()` needs to be called
+  explicitly now, and pip_packages queries can be made optional.
+- `reset()` does not accept any arguments anymore; remembers `__init__()` argument values instead.
+- fixed missing `reproducible.add_pip_packages()`.
 
 **version 0.2.4**, *20170809*
 - hotfix for Python 2.7---because I am stupid.

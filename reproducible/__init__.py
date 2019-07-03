@@ -1,10 +1,10 @@
-__version__ = '0.2.4'
+__version__ = '0.3.0'
 
 from .reproducible import Context
 
 # Create one instance and export its methods as module-level functions,
 # similarly to the `random` standart module.
-_context = Context(repo_path=None)
+_context = Context()
 
 reset            = _context.reset
 data             = _context.data
@@ -19,6 +19,7 @@ add_random_state = _context.add_random_state
 json                = _context.json
 yaml                = _context.yaml
 requirements        = _context.requirements
+add_pip_packages    = _context.add_pip_packages
 export_json         = _context.export_json
 export_yaml         = _context.export_yaml
 export_requirements = _context.export_requirements

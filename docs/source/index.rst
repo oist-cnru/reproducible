@@ -6,6 +6,9 @@ Reproducible Documentation
 Reference
 ---------
 
+.. autoclass:: reproducible.Context
+
+
 Tracking Functions
 ~~~~~~~~~~~~~~~~~~
 
@@ -20,11 +23,10 @@ tracking data will always include:
   avoid unnecessary packages here)
 * the timestamp (of the import of the reproducible library)
 
-.. autofunction:: reproducible.add_repo
-.. autofunction:: reproducible.add_file
-.. autofunction:: reproducible.add_data
-.. autofunction:: reproducible.function_args
-.. autofunction:: reproducible.add_random_state
+.. autofunction:: reproducible.Context.add_repo
+.. autofunction:: reproducible.Context.add_file
+.. autofunction:: reproducible.Context.add_data
+.. autofunction:: reproducible.Context.add_random_state
 
 Export Functions
 ~~~~~~~~~~~~~~~~
@@ -32,13 +34,13 @@ Export Functions
 All export function exists in two flavor. Those that export to the disk, and
 those that return their output.
 
-.. autofunction:: reproducible.export_json
-.. autofunction:: reproducible.export_yaml
-.. autofunction:: reproducible.export_requirements
+.. autofunction:: reproducible.Context.export_json
+.. autofunction:: reproducible.Context.export_yaml
+.. autofunction:: reproducible.Context.export_requirements
 
-.. autofunction:: reproducible.json
-.. autofunction:: reproducible.yaml
-.. autofunction:: reproducible.requirements
+.. autofunction:: reproducible.Context.json
+.. autofunction:: reproducible.Context.yaml
+.. autofunction:: reproducible.Context.add_pip_packages
 
 
 Git Repository Functions
@@ -47,8 +49,14 @@ Git Repository Functions
 The :py:func:`reproducible.git_info` and :py:func:`reproducible.git_dirty` can
 be used to access the state of the git repository directly.
 
-.. autofunction:: reproducible.git_info
-.. autofunction:: reproducible.git_dirty
+.. autofunction:: reproducible.Context.git_info
+.. autofunction:: reproducible.Context.git_dirty
+
+
+Misc Functions
+~~~~~~~~~~~~~~
+
+.. autofunction:: reproducible.Context.function_args
 
 
 Deprecated Functions
@@ -56,5 +64,6 @@ Deprecated Functions
 
 Those function are likely to get removed in one of the next release.
 
-.. autofunction:: reproducible.save_json
-.. autofunction:: reproducible.save_yaml
+.. autofunction:: reproducible.Context.save_json
+.. autofunction:: reproducible.Context.save_yaml
+.. autofunction:: reproducible.Context.requirements
