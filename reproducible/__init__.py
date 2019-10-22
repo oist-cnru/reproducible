@@ -27,6 +27,8 @@ export_requirements = _context.export_requirements
 git_info         = _context.git_info
 git_dirty        = _context.git_dirty
 
+sha256           = _context.sha256
+
 
 # Deprecated, will be removed in a future version
 save_json        = _context.save_json

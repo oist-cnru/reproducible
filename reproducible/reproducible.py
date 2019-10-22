@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import copy
 import json
@@ -254,26 +255,55 @@ class Context:
                             some workflows, an input file is also an output
                             file later, and `reproducible` can track both state
                             of the file, as long as they are added under
-                            different labels (presumably 'input' and 'output'
-                            in this case). If `False`, the existing entry, if
-                            any, will be overwritten.
-        :raise ValueError:  if already is False, raise ValueError if the file
-                            was already added.
+                            different categories (presumably 'input' and
+                            'output' in this case). If `False`, the existing
+                            entry, if any, will be overwritten.
+        :return:            The computed sha256 of the file.
+        :raise ValueError:  if `already` is False and the file was previously
+                            added (same string path), raise ValueError.
+                            Note that no normalization is done on the path when
+                            checking for existence, so a file can be added
+                            multiple times with different, albeit equivalent,
+                            paths.
         """
+        path = os.path.normpath(path)
         if ((not already) and 'files' in self.data
             and category in self.data['files']
             and path in self.data['files'][category]):
             raise ValueError("the '{}' file '{}' is already tracked".format(
                                                                 category, path))
-        file_info = {'sha256': self._sha256(path),
+        file_info = {'sha256': self.sha256(path),
                      'mtime': os.path.getmtime(path)}
         self.data.setdefault('files', {})
         self.data['files'].setdefault(category, {})
         self.data['files'][category][path] = file_info
 
+        return file_info['sha256']
+
+    def untrack_file(self, path, category='', notfound_ok=False):
+        """
+        Untrack a tracked file, i.e. undo a `add_file` invocation.
+
+        :param path:        the path to the file, the same that was given when
+                            `add_file` was invoked.
+        :param category:    category of the file that was given when adding it.
+        :param notfound_ok: if `True`, will not raise `ValueError` if the file
+                            was not present in the file trackeds by
+                            reproducible.
+        :raise ValueError:  if `notfound_ok` is False and the file was not
+                            already tracked.
+        """
+        path = os.path.normpath(path)
+        notfound = False
+        try:
+            self.data['files'][category].pop(path)
+        except KeyError:
+            if not notfound_ok:
+                raise ValueError(('the `{}` file was not found as tracked in '
+                                  'category {}.').format(path, category))
 
     @classmethod
-    def _sha256(cls, path):
+    def sha256(cls, path):
         """Compute the SHA256 hash of a file"""
         if not os.path.isfile(path):
             raise FileNotFoundError('file {} was not found'.format(path))
@@ -316,7 +346,7 @@ class Context:
             self.data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
             json.dump(self.data, f, sort_keys=True, indent=2)
-        return self._sha256(path)
+        return self.sha256(path)
 
 
 
@@ -352,7 +382,7 @@ class Context:
             self.data['timestamp'] = self._timestamp()
         with open(path, 'w') as f:
             yaml.safe_dump(self.data, f, indent=2, allow_unicode=True)
-        return self._sha256(path)
+        return self.sha256(path)
 
 
     ## Packages
@@ -374,6 +404,39 @@ class Context:
         """
         self.data['packages'] = self._pip_freeze()
         return self.data['packages']
+
+
+    def find_editable_repos(self):
+        """Find editable repositories in the list of installed packages.
+
+        :return:  a list of (name, version, path) for each of the editable
+                  repository found.
+        :note:    this function is considered brittle, as it relies on the
+                  text output of the `pip freeze` command.
+        """
+        requirements = self.add_pip_packages()
+        editables = []
+        for i, r in enumerate(requirements):
+            if r.startswith('-e'):
+                desc = requirements[i - 1]
+                if desc.startswith('# '):
+                    reg_exp = '(.*)\((?P<name>.+)\=\=(?P<version>.+)\)'
+                    m = re.fullmatch(reg_exp, desc)
+                    assert m is not None
+                    name, version = m.group('name'), m.group('version')
+                    editables.append((name, version, r[3:]))
+        return editables
+
+    def add_editable_repos(self, allow_dirty=True, verbose=False):
+        """Track all editable repository found in the list of installed packages.
+
+        Invokes `add_repo()` on each repository found.
+        """
+        for editable in self.find_editable_repos():
+            name, version, path = editable
+            if verbose:
+                print('adding editable repo {} ({})'.format(name, path))
+            self.add_repo(path, allow_dirty=allow_dirty)
 
     def requirements(self):
         """Return a list of the installed packages.
