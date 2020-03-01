@@ -420,7 +420,7 @@ class Context:
             if r.startswith('-e'):
                 desc = requirements[i - 1]
                 if desc.startswith('# '):
-                    reg_exp = '(.*)\\((?P<name>.+)\=\=(?P<version>.+)\\)'
+                    reg_exp = '(.*)\\((?P<name>.+)\\=\\=(?P<version>.+)\\)'
                     m = re.fullmatch(reg_exp, desc)
                     assert m is not None
                     name, version = m.group('name'), m.group('version')
