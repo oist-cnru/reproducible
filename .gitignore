@@ -7,6 +7,9 @@ examples/results_prov.json
 examples/results_prov.yaml
 examples/requirements_full.txt
 
+# test outputs
+tests/data.msgpack.xz
+
 # release checklist
 release_checklist.md
 
