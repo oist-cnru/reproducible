@@ -13,7 +13,7 @@ with open(os.path.join(here, 'readme.md'), 'r') as fd:
 
 setuptools.setup(
     name='reproducible',
-    version='0.3.0',
+    version='0.4.0',
 
     description='Reproducible library',
     long_description=long_description,

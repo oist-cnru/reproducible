@@ -1,6 +1,7 @@
 import os
-import lzma
+import sys
 
+import pytest
 import msgpack
 
 import reproducible
@@ -9,6 +10,8 @@ import reproducible
 here = os.path.dirname(__file__)
 
 def save_msgpack_xz(data, filename):
+    print(sys.version_info < (3, 5))
+    import lzma
     if not filename.endswith('.msgpack.xz'):
         filename += '.msgpack.xz'
     with lzma.open(filename, mode='wb') as fd:
@@ -26,6 +29,7 @@ def save_msgpack_xz(data, filename):
     return filename
 
 def load_msgpack_xz(filename):
+    import lzma
     if not os.path.isfile(filename):
         # trying with appending the extention
         filename += '.msgpack.xz'
@@ -41,6 +45,7 @@ def load_msgpack_xz(filename):
 
     return msgpack.unpackb(msgpack_data, raw=False, object_hook=convert)
 
+@pytest.mark.skipif(sys.version_info < (3, 5), reason="lzma not in python 2.7")
 def test_msgpack():
     context = reproducible.Context(cpuinfo=True)
     save_msgpack_xz(context.data, os.path.join(here, 'data.msgpack.xz'))

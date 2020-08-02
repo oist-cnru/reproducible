@@ -32,7 +32,7 @@ The reproducible library is licensed under the [LGPL version
 code that use other licenses.
 
 The library is in beta; expect some changes. Python 3.5 or later is officially
-supported, but [the code runs on 2.7 and 3.4 (but not on 3.3) as
+supported, but for the time being, [the code runs on 2.7 as
 well](https://travis-ci.org/oist-cnru/reproducible).
 
 
@@ -145,6 +145,9 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 - optional SHA256 in the filename of external files
 
 ## Changelog
+
+**version 0.4.0**, *20190703*
+- 
 
 **version 0.3.0**, *20190703*
 This version introduces API and logic-breaking changes.
