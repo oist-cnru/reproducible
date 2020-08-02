@@ -147,7 +147,8 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 ## Changelog
 
 **version 0.4.0**, *20190703*
-- 
+- new functions `sha256()`, `untrack_file()`, `find_editable_repos()`, `add_editable_repos()`.
+- fix tests.
 
 **version 0.3.0**, *20190703*
 This version introduces API and logic-breaking changes.

@@ -24,9 +24,14 @@ tracking data will always include:
 * the timestamp (of the import of the reproducible library)
 
 .. autofunction:: reproducible.Context.add_repo
-.. autofunction:: reproducible.Context.add_file
 .. autofunction:: reproducible.Context.add_data
 .. autofunction:: reproducible.Context.add_random_state
+.. autofunction:: reproducible.Context.add_file
+.. autofunction:: reproducible.Context.untrack_file
+.. autofunction:: reproducible.Context.find_editable_repos
+.. autofunction:: reproducible.Context.add_editable_repos
+.. autofunction:: reproducible.Context.add_pip_packages
+
 
 Export Functions
 ~~~~~~~~~~~~~~~~
@@ -40,7 +45,7 @@ those that return their output.
 
 .. autofunction:: reproducible.Context.json
 .. autofunction:: reproducible.Context.yaml
-.. autofunction:: reproducible.Context.add_pip_packages
+.. autofunction:: reproducible.Context.requirements
 
 
 Git Repository Functions
@@ -56,6 +61,7 @@ be used to access the state of the git repository directly.
 Misc Functions
 ~~~~~~~~~~~~~~
 
+.. autofunction:: reproducible.Context.sha256
 .. autofunction:: reproducible.Context.function_args
 
 
