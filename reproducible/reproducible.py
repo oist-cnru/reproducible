@@ -49,9 +49,10 @@ class Context:
                      be important, as optimized numerical libraries will use
                      the CPU instruction sets as they are available, and
                      therefore may behave differently on different processors.
+                     Note that this is a costly call (1-2 seconds).
     """
 
-    def __init__(self, cpuinfo=True, pip_packages=False):
+    def __init__(self, cpuinfo=False, pip_packages=False):
         self.collect_cpuinfo      = cpuinfo
         self.collect_pip_packages = pip_packages
         self.reset()
@@ -59,7 +60,7 @@ class Context:
     def reset(self):
         """Reset the context data"""
         self.data = self._collect_basic_data(cpuinfo=self.collect_cpuinfo,
-                        pip_packages=self.collect_pip_packages)
+                                             pip_packages=self.collect_pip_packages)
 
     ## Basic Stuff
 
@@ -404,6 +405,21 @@ class Context:
         """
         self.data['packages'] = self._pip_freeze()
         return self.data['packages']
+
+    def add_cpu_info(self):
+        """Gather detailed information about the CPU(s).
+
+        :return:  the information gathered about the CPU(s).
+
+        Detailed information about the processor capabilities can be important,
+        as optimized numerical libraries will use the CPU instruction sets as
+        they are available, and therefore may behave differently on different
+        processors.
+
+        :remark:  this is a costly call (1-2 seconds).
+        """
+        self.data['cpu_info'] = self._pip_freeze()
+        return self.data['cpu_info']
 
 
     def find_editable_repos(self):

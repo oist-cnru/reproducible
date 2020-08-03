@@ -24,11 +24,14 @@ def test_rerunnable_module():
     reproducible.add_random_state()
     reproducible.add_repo('.', allow_dirty=True)
     reproducible.add_file(os.path.join(here, 'poem.txt'), category='text_input')
+    reproducible.untrack_file(os.path.join(here, 'poem.txt'), category='text_input', notfound_ok=False)
+    reproducible.untrack_file(os.path.join(here, 'poem.txt'), category='text_input', notfound_ok=True)
     reproducible.add_data('n', 10)
 
     reproducible.json()
     reproducible.yaml()
     reproducible.add_pip_packages()
+    reproducible.add_cpu_info()
 
     tmp_path = tempfile.gettempdir()
     reproducible.export_json(os.path.join(tmp_path, 'provdata.json'),

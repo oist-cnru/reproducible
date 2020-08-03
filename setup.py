@@ -55,7 +55,7 @@ setuptools.setup(
     include_package_data=True,
 
     # required dependencies
-    install_requires=['gitpython', 'pyyaml', 'py-cpuinfo<5.0.0'],
+    install_requires=['gitpython', 'pyyaml', 'py-cpuinfo'],
 
     # you can install extras_require with
     # $ pip install -e .[test]

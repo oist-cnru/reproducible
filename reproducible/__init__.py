@@ -13,13 +13,15 @@ function_args    = _context.function_args
 
 add_repo         = _context.add_repo
 add_file         = _context.add_file
+untrack_file     = _context.untrack_file
 add_data         = _context.add_data
 add_random_state = _context.add_random_state
+add_pip_packages = _context.add_pip_packages
+add_cpu_info     = _context.add_cpu_info
 
 json                = _context.json
 yaml                = _context.yaml
 requirements        = _context.requirements
-add_pip_packages    = _context.add_pip_packages
 export_json         = _context.export_json
 export_yaml         = _context.export_yaml
 export_requirements = _context.export_requirements
