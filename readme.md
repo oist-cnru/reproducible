@@ -146,13 +146,13 @@ See also the The [API Reference](https://reproducible.readthedocs.io/).
 
 ## Changelog
 
-**version 0.4.1**, *20190703*
+**version 0.4.1**, *20200803*
 - CPU info collection disabled by default for module-level `Context` instance.
 - new `add_cpu_info()` function.
 - add missing module-level functions that were only accesible from instances before.
 - fix leaked-semaphore issue.
 
-**version 0.4.0**, *20190703*
+**version 0.4.0**, *20200802*
 - new functions `sha256()`, `untrack_file()`, `find_editable_repos()`, `add_editable_repos()`.
 - fix tests.
 
