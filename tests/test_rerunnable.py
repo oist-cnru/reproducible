@@ -28,6 +28,9 @@ def test_rerunnable_module():
     reproducible.untrack_file(os.path.join(here, 'poem.txt'), category='text_input', notfound_ok=True)
     reproducible.add_data('n', 10)
 
+    reproducible.find_editable_repos()
+    reproducible.add_editable_repos()
+
     reproducible.json()
     reproducible.yaml()
     reproducible.add_pip_packages()

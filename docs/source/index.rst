@@ -31,6 +31,7 @@ tracking data will always include:
 .. autofunction:: reproducible.Context.find_editable_repos
 .. autofunction:: reproducible.Context.add_editable_repos
 .. autofunction:: reproducible.Context.add_pip_packages
+.. autofunction:: reproducible.Context.add_cpu_info
 
 
 Export Functions
@@ -72,4 +73,3 @@ Those function are likely to get removed in one of the next release.
 
 .. autofunction:: reproducible.Context.save_json
 .. autofunction:: reproducible.Context.save_yaml
-.. autofunction:: reproducible.Context.requirements

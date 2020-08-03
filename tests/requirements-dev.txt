@@ -1,2 +1,7 @@
 pytest
+pytest-cov
 msgpack
+twine
+wheel
+sphinx
+sphinx-rtd-theme

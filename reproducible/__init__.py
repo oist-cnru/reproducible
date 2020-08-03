@@ -1,4 +1,4 @@
-__version__ = '0.4.0'
+__version__ = '0.4.1'
 
 from .reproducible import Context
 
@@ -18,6 +18,9 @@ add_data         = _context.add_data
 add_random_state = _context.add_random_state
 add_pip_packages = _context.add_pip_packages
 add_cpu_info     = _context.add_cpu_info
+
+find_editable_repos = _context.find_editable_repos
+add_editable_repos  = _context.add_editable_repos
 
 json                = _context.json
 yaml                = _context.yaml

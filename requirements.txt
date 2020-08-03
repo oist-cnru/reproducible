@@ -6,8 +6,3 @@
 GitPython
 pyyaml
 py-cpuinfo
-
-pytest
-pytest-cov
-sphinx
-sphinx-rtd-theme
